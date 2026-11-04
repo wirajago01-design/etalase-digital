@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Donasi Buku untuk Desa</title><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../demo.css">
+<style>.shelf{display:flex;align-items:flex-end;gap:6px;height:120px;border-bottom:9px solid #8b5e34;padding:0 8px;margin:6px 0 18px}.shelf i{display:block;border-radius:5px 5px 0 0}
+.stat{display:flex;justify-content:space-between;font-weight:700;margin-top:8px}.stat .num{font-size:2rem;color:#0a6fb5}
+.desa{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:6px}.desa div{background:#e9f3fb;border-radius:14px;padding:12px;text-align:center;font-weight:700}.desa small{display:block;color:#64748b;font-weight:600}
+.ok{display:none;background:#f0fdf4;border:2px solid #22c55e;border-radius:14px;padding:12px 16px;margin-top:12px;font-weight:700;color:#166534}</style></head>
+<body><div class="wrap">
+<div class="top"><a class="back" href="/etalase-digital-stella/">← Etalase Stella</a><h1>📚 Donasi Buku untuk Desa</h1><p>Buku bekas layak baca darimu bisa jadi jendela dunia untuk anak-anak di desa.</p></div>
+<div class="card"><div class="shelf"><i style="width:30px;height:100px;background:#0a6fb5"></i><i style="width:24px;height:80px;background:#ffd166"></i><i style="width:34px;height:112px;background:#22c55e"></i><i style="width:22px;height:74px;background:#ff6b81"></i><i style="width:30px;height:104px;background:#7c3aed"></i><i style="width:26px;height:90px;background:#2f9bff"></i></div>
+<div class="bar"><i id="prog"></i></div><div class="stat"><span><span class="num" id="jumlah">320</span> buku terkumpul</span><span class="muted">Target 500</span></div></div>
+<div class="card"><h2>Kirim donasi</h2>
+<div class="row"><label>Nama kamu<input id="nama" placeholder="Contoh: Wira"></label><label>Jumlah buku<input id="qty" type="number" min="1" value="3"></label></div>
+<label>Jenis buku<select id="jenis"><option>Buku cerita anak</option><option>Buku pelajaran</option><option>Ensiklopedia</option><option>Komik edukasi</option><option>Novel remaja</option></select></label>
+<button class="btn" id="kirim">📦 Donasi sekarang</button><div class="ok" id="ok"></div></div>
+<div class="card"><h2>Desa penerima</h2><div class="desa"><div>🏡 Desa Sukamaju<small>120 buku</small></div><div>🏡 Desa Tanjung Sari<small>110 buku</small></div><div>🏡 Desa Way Jaya<small>90 buku</small></div></div></div>
+<div class="card"><h2>Donatur terbaru</h2><ul class="list" id="donatur"></ul></div>
+</div>
+<script>
+let jumlah=320;const TARGET=500;let donatur=[['Nadia','Buku cerita anak',5],['Raka','Komik edukasi',3],['Bu Sari','Ensiklopedia',2]];
+function tampil(){
+  document.getElementById('jumlah').textContent=jumlah;
+  document.getElementById('prog').style.width=Math.min(100,jumlah/TARGET*100)+'%';
+  document.getElementById('donatur').innerHTML=donatur.map(d=>'<li><span>💙</span><b>'+d[0]+'<br><small class="muted">'+d[1]+'</small></b><span class="tag">'+d[2]+' buku</span></li>').join('');
+}
+document.getElementById('kirim').onclick=()=>{
+  const nama=document.getElementById('nama').value.trim(),qty=parseInt(document.getElementById('qty').value)||0,jenis=document.getElementById('jenis').value;
+  if(!nama||qty<1)return alert('Isi nama dan jumlah buku dulu ya.');
+  jumlah+=qty;donatur.unshift([nama,jenis,qty]);donatur=donatur.slice(0,6);tampil();
+  const ok=document.getElementById('ok');ok.style.display='block';ok.textContent='Terima kasih, '+nama+'! '+qty+' buku kamu akan sampai ke perpustakaan desa.';
+};
+tampil();
+</script></body></html>

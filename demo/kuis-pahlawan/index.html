@@ -1,0 +1,46 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kuis Pahlawan Nusantara</title><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../demo.css">
+<style>.hd{display:flex;justify-content:space-between;align-items:center;font-weight:700;color:#0a6fb5}.timer{background:#0b1b33;color:#fff;border-radius:99px;padding:6px 14px;font-size:.9rem}
+.q{font-family:'Bricolage Grotesque','Plus Jakarta Sans',system-ui,sans-serif;font-weight:800;font-size:1.5rem;line-height:1.2;margin:16px 0}
+.op{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:2.5px solid #dbe7f3;background:#fff;border-radius:16px;padding:13px 16px;margin-top:10px;font:inherit;font-weight:700;cursor:pointer}
+.op:hover{border-color:#2f9bff}.op:disabled{color:#0b1b33;cursor:default}.op b{width:32px;height:32px;border-radius:9px;background:#e9f3fb;color:#0a6fb5;display:grid;place-items:center;flex-shrink:0}
+.op.ok{border-color:#22c55e;background:#f0fdf4}.op.ok b{background:#22c55e;color:#fff}.op.no{border-color:#f87171;background:#fef2f2}.op.no b{background:#f87171;color:#fff}
+.ket{margin-top:14px;padding:12px 16px;border-radius:14px;background:#e9f3fb;display:none}.prog{display:flex;gap:5px;margin-top:18px}.prog i{flex:1;height:7px;border-radius:9px;background:#dbe7f3}.prog i.d{background:#0a6fb5}
+.hasil{text-align:center}.hasil .num{font-size:4rem;color:#0a6fb5}.bintang{font-size:2.2rem}</style></head>
+<body><div class="wrap">
+<div class="top"><a class="back" href="/etalase-digital-stella/">← Etalase Stella</a><h1>🏆 Kuis Pahlawan Nusantara</h1><p>10 soal tentang pahlawan nasional. Setiap soal punya waktu 20 detik.</p></div>
+<div class="card" id="kuis"></div></div>
+<script>
+const SOAL=[
+['Pahlawan wanita dari Aceh yang memimpin perlawanan melawan Belanda adalah…',['R.A. Kartini','Cut Nyak Dhien','Dewi Sartika','Martha Christina Tiahahu'],1,'Cut Nyak Dhien memimpin perlawanan rakyat Aceh setelah suaminya, Teuku Umar, gugur.'],
+['Tokoh emansipasi wanita dari Jepara yang terkenal dengan surat-suratnya adalah…',['R.A. Kartini','Cut Nyak Meutia','Nyi Ageng Serang','Dewi Sartika'],0,'Surat-surat Kartini dibukukan dengan judul "Habis Gelap Terbitlah Terang".'],
+['Siapa yang membacakan teks Proklamasi bersama Mohammad Hatta pada 17 Agustus 1945?',['Sutan Sjahrir','Soekarno','Ahmad Soebardjo','Sayuti Melik'],1,'Soekarno dan Mohammad Hatta dikenal sebagai Dwitunggal Proklamator.'],
+['Perang Jawa (1825–1830) dipimpin oleh…',['Pangeran Diponegoro','Sultan Hasanuddin','Tuanku Imam Bonjol','Pattimura'],0,'Pangeran Diponegoro memimpin Perang Jawa melawan Belanda selama lima tahun.'],
+['Tokoh yang dikenal sebagai Bapak Pendidikan Nasional dan pendiri Taman Siswa adalah…',['K.H. Ahmad Dahlan','Ki Hajar Dewantara','Dr. Soetomo','Mohammad Yamin'],1,'Tanggal lahir Ki Hajar Dewantara, 2 Mei, diperingati sebagai Hari Pendidikan Nasional.'],
+['Perang Padri di Sumatra Barat dipimpin oleh…',['Teuku Umar','Tuanku Imam Bonjol','Sisingamangaraja XII','Sultan Agung'],1,'Tuanku Imam Bonjol adalah tokoh utama Perang Padri.'],
+['Kapitan Pattimura memimpin perlawanan rakyat di daerah…',['Maluku','Sulawesi Selatan','Bali','Kalimantan'],0,'Pattimura memimpin perlawanan di Saparua, Maluku, pada tahun 1817.'],
+['Panglima Besar TNI pertama yang terkenal dengan perang gerilyanya adalah…',['A.H. Nasution','Jenderal Sudirman','Gatot Soebroto','Ahmad Yani'],1,'Jenderal Sudirman tetap memimpin perang gerilya meski dalam keadaan sakit.'],
+['Pahlawan wanita muda dari Maluku yang ikut berperang bersama Pattimura adalah…',['Martha Christina Tiahahu','Cut Nyak Dhien','Fatmawati','Maria Walanda Maramis'],0,'Martha Christina Tiahahu ikut berperang saat masih remaja.'],
+['Pendiri organisasi Muhammadiyah adalah…',['K.H. Hasyim Asy\'ari','K.H. Ahmad Dahlan','H.O.S. Tjokroaminoto','K.H. Agus Salim'],1,'K.H. Ahmad Dahlan mendirikan Muhammadiyah di Yogyakarta pada tahun 1912.']];
+let i=0,skor=0,sisa=20,tik=null;const el=document.getElementById('kuis');
+function soal(){
+  clearInterval(tik);sisa=20;const [q,ops,,]=SOAL[i];
+  el.innerHTML='<div class="hd"><span>Soal '+(i+1)+' / '+SOAL.length+'</span><span class="timer" id="t">⏱ 00:20</span></div><div class="q">'+q+'</div>'+
+  ops.map((o,k)=>'<button class="op" data-k="'+k+'"><b>'+'ABCD'[k]+'</b>'+o+'</button>').join('')+
+  '<div class="ket" id="ket"></div><div class="prog">'+SOAL.map((_,k)=>'<i class="'+(k<i?'d':'')+'"></i>').join('')+'</div>';
+  el.querySelectorAll('.op').forEach(b=>b.onclick=()=>jawab(+b.dataset.k));
+  tik=setInterval(()=>{sisa--;document.getElementById('t').textContent='⏱ 00:'+String(sisa).padStart(2,'0');if(sisa<=0)jawab(-1)},1000);
+}
+function jawab(k){
+  clearInterval(tik);const benar=SOAL[i][2];
+  el.querySelectorAll('.op').forEach(b=>{b.disabled=true;const n=+b.dataset.k;if(n===benar)b.classList.add('ok');else if(n===k)b.classList.add('no')});
+  if(k===benar)skor+=10;
+  const ket=document.getElementById('ket');ket.style.display='block';
+  ket.innerHTML=(k===benar?'✅ Benar! ':k<0?'⏰ Waktu habis. ':'❌ Kurang tepat. ')+SOAL[i][3]+'<br><br><button class="btn" id="lanjut">'+(i<SOAL.length-1?'Soal berikutnya':'Lihat hasil')+'</button>';
+  document.getElementById('lanjut').onclick=()=>{i++;i<SOAL.length?soal():hasil()};
+}
+function hasil(){
+  const b=skor>=80?'⭐⭐⭐':skor>=50?'⭐⭐☆':'⭐☆☆';
+  el.innerHTML='<div class="hasil"><div class="bintang">'+b+'</div><div class="num">'+skor+'</div><p class="muted">'+(skor>=80?'Luar biasa! Kamu kenal banyak pahlawan.':skor>=50?'Bagus! Ayo belajar sedikit lagi.':'Tetap semangat, coba lagi ya!')+'</p><br><button class="btn" onclick="i=0;skor=0;soal()">Main lagi</button></div>';
+}
+soal();
+</script></body></html>

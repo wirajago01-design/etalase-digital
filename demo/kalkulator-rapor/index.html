@@ -1,0 +1,47 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kalkulator Nilai Rapor</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../demo.css">
+<style>
+.hasil{display:grid;grid-template-columns:1.4fr 1fr;gap:14px}
+.box{border-radius:20px;padding:20px;color:#fff}
+.box small{opacity:.85;font-weight:700}.box .num{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:3.4rem;line-height:1.05}
+.rata{background:#0b1b33}.pred{background:#22c55e;display:flex;justify-content:space-between;align-items:center}
+.pred.B{background:#0a6fb5}.pred.C{background:#f59e0b}.pred.D{background:#ef4444}
+.mapel{display:grid;grid-template-columns:1fr 110px 44px;gap:10px;align-items:center;margin-top:10px}
+.mapel input{margin:0}.hapus{border:none;background:#fef2f2;color:#ef4444;border-radius:12px;height:44px;font-size:1.1rem;cursor:pointer}
+.mbar{grid-column:1/-1;height:6px;border-radius:9px;background:#e2ecf6;overflow:hidden;margin-top:-4px}.mbar i{display:block;height:100%;background:#0a6fb5;border-radius:9px}
+.aturan{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.aturan span{background:#e9f3fb;border-radius:99px;padding:6px 12px;font-weight:700;font-size:.85rem}
+@media(max-width:560px){.hasil{grid-template-columns:1fr}}
+</style></head>
+<body><div class="wrap">
+<div class="top"><a class="back" href="/etalase-digital-stella/">← Etalase Stella</a><h1>🧮 Kalkulator Nilai Rapor</h1><p>Masukkan nilai tiap mata pelajaran, rata-rata dan predikat langsung dihitung.</p></div>
+<div class="card hasil-wrap"><div class="hasil">
+<div class="box rata"><small>Rata-rata nilai</small><div class="num" id="rata">0</div><small id="jml">0 mata pelajaran</small></div>
+<div class="box pred" id="predBox"><div><small>Predikat</small><div style="font-weight:700" id="ket">-</div></div><div class="num" id="pred">-</div></div>
+</div>
+<div class="aturan"><span>A: 85–100</span><span>B: 75–84</span><span>C: 65–74</span><span>D: di bawah 65</span></div></div>
+<div class="card"><h2>Daftar nilai</h2><div id="list"></div><br>
+<button class="btn" id="tambah">+ Tambah mata pelajaran</button> <button class="btn alt" id="contoh">Isi contoh</button></div>
+</div>
+<script>
+let data=[['Pemrograman Web',92],['Basis Data',88],['Matematika',81],['Bahasa Indonesia',86],['Bahasa Inggris',85]];
+function predikat(n){return n>=85?['A','Sangat Baik']:n>=75?['B','Baik']:n>=65?['C','Cukup']:['D','Perlu Bimbingan']}
+function hitung(){
+  const valid=data.filter(d=>d[1]!==''&&!isNaN(d[1]));
+  const rata=valid.length?valid.reduce((s,d)=>s+Number(d[1]),0)/valid.length:0;
+  document.getElementById('rata').textContent=valid.length?rata.toLocaleString('id-ID',{maximumFractionDigits:1}):'0';
+  document.getElementById('jml').textContent=valid.length+' mata pelajaran';
+  const [p,k]=valid.length?predikat(rata):['-','-'];
+  document.getElementById('pred').textContent=p;document.getElementById('ket').textContent=k;
+  document.getElementById('predBox').className='box pred '+p;
+  document.querySelectorAll('.mbar i').forEach((b,i)=>b.style.width=Math.max(0,Math.min(100,Number(data[i][1])||0))+'%');
+}
+function tampil(){
+  document.getElementById('list').innerHTML=data.map((d,i)=>'<div class="mapel"><input placeholder="Nama mapel" value="'+d[0].replace(/"/g,'&quot;')+'" data-i="'+i+'" data-f="0"><input type="number" min="0" max="100" placeholder="Nilai" value="'+d[1]+'" data-i="'+i+'" data-f="1"><button class="hapus" data-i="'+i+'" title="Hapus">✕</button><div class="mbar"><i></i></div></div>').join('');
+  document.querySelectorAll('#list input').forEach(inp=>inp.oninput=()=>{let v=inp.value;if(inp.dataset.f==='1'){v=v===''?'':Math.max(0,Math.min(100,Number(v)))}data[inp.dataset.i][inp.dataset.f]=v;hitung()});
+  document.querySelectorAll('.hapus').forEach(b=>b.onclick=()=>{data.splice(b.dataset.i,1);tampil()});
+  hitung();
+}
+document.getElementById('tambah').onclick=()=>{data.push(['','']);tampil()};
+document.getElementById('contoh').onclick=()=>{data=[['Pemrograman Web',92],['Basis Data',88],['Matematika',81],['Bahasa Indonesia',86],['Bahasa Inggris',85]];tampil()};
+tampil();
+</script></body></html>

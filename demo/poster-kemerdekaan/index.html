@@ -1,0 +1,64 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Poster Digital Hari Kemerdekaan</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../demo.css">
+<style>
+.poster{--w:#d4141b;--w2:#8e0a10;position:relative;aspect-ratio:4/3;border-radius:22px;overflow:hidden;background:#fff;box-shadow:0 30px 50px -24px rgba(0,0,0,.45);margin-top:18px;container-type:inline-size}
+.poster.biru{--w:#0a6fb5;--w2:#063d7a}
+.atas{position:absolute;inset:0 0 50% 0;background:linear-gradient(135deg,var(--w),var(--w2));overflow:hidden}
+.atas::before{content:"";position:absolute;inset:0;background:repeating-radial-gradient(circle at 85% 20%,transparent 0 4cqw,rgba(255,255,255,.1) 4cqw 4.4cqw)}
+.bunting{position:absolute;left:0;right:0;top:0;height:6cqw;display:flex;justify-content:space-around}
+.bunting i{width:0;height:0;border-left:1.6cqw solid transparent;border-right:1.6cqw solid transparent;border-top:3cqw solid #fff;animation:kibar 1.6s ease-in-out infinite alternate;transform-origin:top}
+.bunting i:nth-child(even){border-top-color:#ffd166;animation-delay:-.8s}
+@keyframes kibar{from{transform:rotate(-8deg)}to{transform:rotate(8deg)}}
+.judul{position:absolute;left:6cqw;top:11cqw;color:#fff;font-weight:700;font-size:2.4cqw}.judul b{display:block;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:3.8cqw}
+.angka{position:absolute;right:4cqw;top:3cqw;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:43cqw;line-height:.85;color:#fff;letter-spacing:-2.5cqw;text-shadow:1cqw 1cqw 0 rgba(0,0,0,.2)}
+.fw{position:absolute;width:16cqw;height:16cqw;border-radius:50%;background:repeating-conic-gradient(var(--c) 0 4deg,transparent 4deg 22deg);-webkit-mask:radial-gradient(circle,transparent 18%,#000 20%,#000 60%,transparent 62%);mask:radial-gradient(circle,transparent 18%,#000 20%,#000 60%,transparent 62%);animation:meledak 2.4s ease-out infinite;opacity:0}
+@keyframes meledak{0%{transform:scale(.1);opacity:0}15%{opacity:1}70%{transform:scale(1);opacity:.9}100%{transform:scale(1.15);opacity:0}}
+.pita{position:absolute;left:0;right:0;top:50%;height:1.8cqw;transform:translateY(-50%);background:repeating-linear-gradient(90deg,#0b1b33 0 2.5cqw,#fff 2.5cqw 5cqw)}
+.bawah{position:absolute;inset:50% 0 0 0;background:radial-gradient(rgba(0,0,0,.08) .18cqw,transparent .22cqw) 0 0/1.8cqw 1.8cqw}
+.slogan{position:absolute;left:6cqw;bottom:8cqw;color:var(--w);font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:7.6cqw;line-height:.95;letter-spacing:-.2cqw}
+.dari{position:absolute;left:6cqw;bottom:3.5cqw;font-weight:700;font-size:2.2cqw;color:#0b1b33}
+.tgl{position:absolute;right:6cqw;bottom:8cqw;background:#0b1b33;color:#fff;border-radius:2cqw;padding:2cqw 2.8cqw;text-align:center;box-shadow:.7cqw .7cqw 0 var(--w)}
+.tgl b{display:block;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:6.5cqw;line-height:.9}.tgl span{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:2.5cqw}.tgl small{display:block;font-size:1.4cqw;opacity:.8;margin-top:.4cqw}
+.pilih{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.hitung{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;text-align:center}
+.hitung div{background:#e9f3fb;border-radius:16px;padding:14px 6px}.hitung b{display:block;font-family:'Bricolage Grotesque',system-ui,sans-serif;font-size:2rem;color:#0a6fb5}
+</style></head>
+<body><div class="wrap">
+<div class="top"><a class="back" href="/etalase-digital-stella/">← Etalase Stella</a><h1>🇮🇩 Poster Digital Hari Kemerdekaan</h1><p>Poster interaktif: ganti warna, tulis ucapanmu sendiri, dan lihat kembang apinya.</p></div>
+<div class="poster" id="poster">
+ <div class="atas"><div class="bunting"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="fw" style="--c:#ffd166;left:36cqw;top:16cqw"></div><div class="fw" style="--c:#fff;left:18cqw;top:24cqw;width:11cqw;height:11cqw;animation-delay:.8s"></div><div class="fw" style="--c:#7dd3fc;left:48cqw;top:6cqw;width:9cqw;height:9cqw;animation-delay:1.5s"></div>
+  <div class="judul">Dirgahayu<b>Republik Indonesia</b></div><div class="angka" id="angka">81</div></div>
+ <div class="pita"></div><div class="bawah"></div>
+ <div class="slogan" id="slogan">Merdeka<br>bersatu, maju.</div><div class="dari" id="dari">Poster Digital Hari Kemerdekaan</div>
+ <div class="tgl"><b>17</b><span>Agustus</span><small id="tahun">1945 – 2026</small></div>
+</div>
+<div class="card"><h2>Ubah poster</h2>
+<div class="row"><label>Ucapan<input id="ucapan" maxlength="40" value="Merdeka bersatu, maju."></label><label>Dari (nama kamu)<input id="nama" maxlength="30" placeholder="Contoh: Wira, XI RPL"></label></div>
+<div class="pilih"><button class="btn" id="merah">🔴 Merah Putih</button><button class="btn alt" id="biru">🔵 Biru Laut</button></div></div>
+<div class="card"><h2 id="judulHitung">Menuju 17 Agustus berikutnya</h2><div class="hitung"><div><b id="h">0</b>hari</div><div><b id="j">0</b>jam</div><div><b id="m">0</b>menit</div><div><b id="d">0</b>detik</div></div></div>
+</div>
+<script>
+const P=document.getElementById('poster'),esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function ucapan(){
+  const u=document.getElementById('ucapan').value.trim()||'Merdeka!';const kata=esc(u).split(' ');const tengah=Math.ceil(kata.length/2);
+  document.getElementById('slogan').innerHTML=kata.slice(0,tengah).join(' ')+'<br>'+kata.slice(tengah).join(' ');
+  const n=document.getElementById('nama').value.trim();document.getElementById('dari').textContent=n?'— dari '+n:'Poster Digital Hari Kemerdekaan';
+}
+document.getElementById('ucapan').oninput=ucapan;document.getElementById('nama').oninput=ucapan;
+document.getElementById('merah').onclick=()=>{P.classList.remove('biru');merah.className='btn';biru.className='btn alt'};
+document.getElementById('biru').onclick=()=>{P.classList.add('biru');biru.className='btn';merah.className='btn alt'};
+// angka HUT & hitung mundur otomatis mengikuti tanggal hari ini
+function hitung(){
+  const now=new Date();let th=now.getFullYear();let target=new Date(th,7,17);
+  const hariH=now.getMonth()===7&&now.getDate()===17;
+  if(now>=new Date(th,7,18))target=new Date(++th,7,17);
+  const keTampil=hariH?th-1945:(now<new Date(now.getFullYear(),7,17)?now.getFullYear()-1946:now.getFullYear()-1945);
+  document.getElementById('angka').textContent=keTampil;document.getElementById('tahun').textContent='1945 – '+(1945+keTampil);
+  document.getElementById('judulHitung').textContent=hariH?'🎉 Hari ini 17 Agustus! Dirgahayu RI ke-'+(th-1945):'Menuju HUT RI ke-'+(th-1945)+' (17 Agustus '+th+')';
+  let s=Math.max(0,Math.floor((target-now)/1000));
+  document.getElementById('h').textContent=Math.floor(s/86400);s%=86400;document.getElementById('j').textContent=Math.floor(s/3600);s%=3600;
+  document.getElementById('m').textContent=Math.floor(s/60);document.getElementById('d').textContent=s%60;
+}
+hitung();setInterval(hitung,1000);
+</script></body></html>

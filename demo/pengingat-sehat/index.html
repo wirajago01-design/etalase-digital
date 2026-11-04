@@ -1,0 +1,31 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pengingat Sehat Pelajar</title><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../demo.css">
+<style>.air{display:flex;align-items:center;gap:26px;flex-wrap:wrap}
+.glass{width:120px;height:150px;border:6px solid #0b1b33;border-top:none;border-radius:0 0 28px 28px;position:relative;overflow:hidden;flex-shrink:0}
+.glass i{position:absolute;left:0;right:0;bottom:0;background:linear-gradient(180deg,#7dd3fc,#0a6fb5);transition:height .5s}
+.air .num{font-size:2.6rem}.tm{font-family:'Bricolage Grotesque',system-ui,sans-serif;font-weight:800;font-size:3rem;color:#0a6fb5}
+.gerak{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.gerak label{display:flex;align-items:center;gap:10px;background:#e9f3fb;border-radius:14px;padding:12px;margin:0;cursor:pointer}
+.gerak input{width:auto;margin:0;accent-color:#0a6fb5}.pesan{display:none;margin-top:12px;background:#fff7e6;border:2px solid #ffd166;border-radius:14px;padding:12px 16px;font-weight:700}</style></head>
+<body><div class="wrap">
+<div class="top"><a class="back" href="/etalase-digital-stella/">← Etalase Stella</a><h1>💧 Pengingat Sehat Pelajar</h1><p>Belajar tetap fokus, badan tetap sehat.</p></div>
+<div class="card"><h2>Target minum hari ini</h2><div class="air"><div class="glass"><i id="isi" style="height:0"></i></div>
+<div><div class="num" id="gelas">0 / 8 gelas</div><p class="muted" id="semangat">Yuk mulai dengan segelas air!</p><br>
+<button class="btn" id="minum">+ Sudah minum 1 gelas</button> <button class="btn alt" id="ulang">Ulang</button></div></div></div>
+<div class="card"><h2>Istirahat mata 20-20-20</h2><p class="muted">Setiap 20 menit melihat layar, lihat benda sejauh ±6 meter selama 20 detik.</p>
+<div class="tm" id="timer">20:00</div><button class="btn" id="mulai">▶ Mulai timer</button> <button class="btn alt" id="reset">Reset</button>
+<div class="pesan" id="pesan">👀 Waktunya istirahat mata! Lihat ke kejauhan selama 20 detik.</div></div>
+<div class="card"><h2>Peregangan setelah belajar 1 jam</h2><div class="gerak">
+<label><input type="checkbox"> 🙆 Putar bahu 10×</label><label><input type="checkbox"> 🤸 Regangkan tangan ke atas</label>
+<label><input type="checkbox"> 🧘 Tarik napas dalam 5×</label><label><input type="checkbox"> 🚶 Jalan sebentar 2 menit</label></div></div>
+</div>
+<script>
+let gelas=0;const pesan=['Yuk mulai dengan segelas air!','Awal yang bagus!','Terus lanjut!','Mantap, sudah sepertiga!','Setengah jalan!','Kamu hebat!','Sedikit lagi!','Satu gelas terakhir!','🎉 Target tercapai, tubuhmu berterima kasih!'];
+function air(){document.getElementById('gelas').textContent=gelas+' / 8 gelas';document.getElementById('isi').style.height=(gelas/8*100)+'%';document.getElementById('semangat').textContent=pesan[gelas]}
+document.getElementById('minum').onclick=()=>{if(gelas<8){gelas++;air()}};
+document.getElementById('ulang').onclick=()=>{gelas=0;air()};
+let detik=1200,jalan=null;
+function tm(){document.getElementById('timer').textContent=String(Math.floor(detik/60)).padStart(2,'0')+':'+String(detik%60).padStart(2,'0')}
+document.getElementById('mulai').onclick=()=>{if(jalan)return;document.getElementById('pesan').style.display='none';
+  jalan=setInterval(()=>{detik--;tm();if(detik<=0){clearInterval(jalan);jalan=null;detik=1200;tm();document.getElementById('pesan').style.display='block'}},1000)};
+document.getElementById('reset').onclick=()=>{clearInterval(jalan);jalan=null;detik=1200;tm();document.getElementById('pesan').style.display='none'};
+air();tm();
+</script></body></html>

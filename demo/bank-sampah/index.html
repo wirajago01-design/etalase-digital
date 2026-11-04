@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bank Sampah Digital</title><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@700;800&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="../demo.css">
+<style>.poin{background:linear-gradient(135deg,#16a34a,#0a6fb5);color:#fff}.poin .num{font-size:3.4rem;line-height:1}.poin .bar{background:rgba(255,255,255,.3);margin:12px 0 8px}.poin .bar i{background:#fff}.ic{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-size:1.3rem;background:#e9f3fb}</style></head>
+<body><div class="wrap">
+<div class="top"><a class="back" href="/etalase-digital-stella/">← Etalase Stella</a><h1>♻️ Bank Sampah Digital</h1><p>Setor sampah terpilah, kumpulkan poin, tukar dengan alat tulis.</p></div>
+<div class="card poin"><div>Poin kamu</div><div class="num" id="total">0</div><div class="bar"><i id="prog" style="width:0"></i></div><small id="info"></small></div>
+<div class="card"><h2>Catat setoran</h2>
+<div class="row"><label>Jenis sampah<select id="jenis">
+<option value="plastik">🧴 Botol plastik (100 poin/kg)</option><option value="kardus">📦 Kardus (50 poin/kg)</option>
+<option value="kaleng">🥫 Kaleng (120 poin/kg)</option><option value="kertas">📰 Kertas bekas (25 poin/kg)</option></select></label>
+<label>Berat (kg)<input id="berat" type="number" min="0.5" step="0.5" value="1"></label></div>
+<button class="btn" id="setor">+ Setor sampah</button></div>
+<div class="card"><h2>Riwayat setoran</h2><ul class="list" id="riwayat"></ul><p class="muted" id="kosong">Belum ada setoran. Yuk mulai pilah sampahmu!</p></div>
+</div>
+<script>
+const HARGA={plastik:[100,'🧴','Botol plastik'],kardus:[50,'📦','Kardus'],kaleng:[120,'🥫','Kaleng'],kertas:[25,'📰','Kertas bekas']};
+const TARGET=1500;let data=[];
+try{data=JSON.parse(localStorage.getItem('bankSampah')||'[]')}catch(e){}
+function simpan(){try{localStorage.setItem('bankSampah',JSON.stringify(data))}catch(e){}}
+function tampil(){
+  const total=data.reduce((s,d)=>s+d.poin,0);
+  document.getElementById('total').textContent=total.toLocaleString('id-ID');
+  document.getElementById('prog').style.width=Math.min(100,total/TARGET*100)+'%';
+  document.getElementById('info').textContent=total>=TARGET?'🎉 Poin cukup! Tukar dengan paket alat tulis.':(TARGET-total)+' poin lagi untuk ditukar paket alat tulis';
+  const ul=document.getElementById('riwayat');
+  ul.innerHTML=data.slice().reverse().map(d=>'<li><span class="ic">'+HARGA[d.jenis][1]+'</span><b>'+HARGA[d.jenis][2]+'<br><small class="muted">'+d.berat+' kg · '+d.tgl+'</small></b><span class="tag">+'+d.poin+'</span></li>').join('');
+  document.getElementById('kosong').style.display=data.length?'none':'block';
+}
+document.getElementById('setor').onclick=()=>{
+  const jenis=document.getElementById('jenis').value,berat=parseFloat(document.getElementById('berat').value)||0;
+  if(berat<=0)return alert('Isi berat sampah dulu ya.');
+  data.push({jenis,berat,poin:Math.round(berat*HARGA[jenis][0]),tgl:new Date().toLocaleDateString('id-ID',{weekday:'long'})});
+  simpan();tampil();
+};
+tampil();
+</script></body></html>
